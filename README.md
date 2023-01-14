@@ -7,3 +7,4 @@
 
 - [Introduction to Python](intro.md)
 - [Basic Python Syntax](basic_syntax.md)
+- [Loops](loops.md)
