@@ -9,3 +9,4 @@
 - [Basic Python Syntax](basic_syntax.md)
 - [Loops](loops.md)
 - [Basic Structures](structures.md)
+- [Object Oriented Programming](oop.md)
