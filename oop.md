@@ -299,3 +299,115 @@ class Piglet:
 pig = Piglet()
 pig.name = "gg"
 ```
+
+## Code Reuse
+
+### Inheritance
+
+```py
+class Fruit:
+	def __init__(self, color, flavor):
+		self.color = color
+		self.flavor = flavor
+
+class Apple(Fruit):
+	pass
+
+class Grape(Fruit):
+	pass
+```
+
+Both `Apple` and `Grape` inherit from the `Fruit` class. So they have the same constructor which sets the flavor and color attributes.
+
+The `Fruit` class is the parent class, while `Apple` and `Grape` are siblings.
+
+```py
+granny_smith = Apple("green" "tart")
+carnelian = Grape("purple", "sweet")
+
+print(granny_smith.flavor)
+print(carnelian.color)
+```
+
+There can also be changes for the specific child classes that are different from the parent.
+
+```py
+class Animal:
+	sound = ""
+	def __init__(self, name):
+		self.name = name
+	def speak(self):
+		print(f"{self.sound} I'm {self.name}! {self.sound}")
+
+class Piglet(Animal):
+	sound = "Oink!"
+
+
+hamlet = Piglet("Hamlet")
+hamlet.speak()
+
+class Cow(Animal):
+	sound = "Mooooo"
+```
+
+### Composition
+
+Can use the `is a` to check the inheritance.
+
+When two different classes are related, but there is no inheritance is **composition**.
+
+E.g.
+A `Package` class which represents a software package: which contains attributes about the software package, like name, version, and size.
+
+There is also a `Repository` class which represents all the products available for installation.
+
+There's no inheritance relationship, but they are related. The `Repository` class will have a dictionary, or list, of `Packages` in that repository
+
+```py
+class Repository:
+	def __init__(self):
+		self.packages = {}
+
+	def add_package(self, package):
+		self.packages[package.name] = package
+
+	def total_size(self):
+		result = 0
+		for package in self.packages.values():
+			result += package.size
+		return result
+```
+
+Initialize the packages dictionary in the constructor method, to ensure that every instance of the `Repository` has its own dictionary.
+
+Composition allows us to use objects as attributes, as well as access all their attributes and methods.
+
+**NB** Always initialize mutable attributes in the constructor. If you initialize in teh class level, then all instances of the class will have the same things.
+
+### Python Modules
+
+Used to organize functions, classes, and other data together in a structured way. MOdules are set up through separate files containing the necessary classes and functions.
+
+Use the `import` keyword. There are a lot in the Python standard libraries.
+
+```py
+import random
+
+random.randint(1, 10)
+```
+
+Uses the dot notation like methods in classes.
+
+```py
+import datetime
+
+now = datetime.datetime.now()
+type(now)
+<class 'datetime.datetime'>
+
+print(now + datetime.timedelta(days=28))
+```
+
+The official documentation lists all the modules in the standard library.
+
+[Pypi](https://pypi.org/) is the Python repository and index of a number of modules developed by Python programmers around the world.
