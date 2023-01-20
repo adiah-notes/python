@@ -1,0 +1,3 @@
+This is a short txt file.
+I'll use this to test my function for now.
+file
