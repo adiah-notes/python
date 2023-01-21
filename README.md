@@ -14,3 +14,5 @@
 - [Object Oriented Programming](crash_course/oop.md)
 
 ### Interacting with the OS
+
+- [Introduction](os_interaction/python.md)
