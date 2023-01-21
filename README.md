@@ -16,3 +16,4 @@
 ### Interacting with the OS
 
 - [Introduction](os_interaction/python.md)
+- [Managing Files](os_interaction/files.md)
