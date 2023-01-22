@@ -175,3 +175,103 @@ pattern = r"^[\w\W][\w\W\d]*$"
 ### Capturing Groups
 
 Portions of the pattern that are enclosed in parentheses.
+
+Use parentheses to capture groups.
+
+Eg:
+Getting first name and last name from a list.
+
+```py
+# Looks for a group of letters, a comma, then a space and another group of letters.
+result = re.search(r"^(\w*), (\w*)$", "Lovelace, Ada")
+
+print(result.groups())
+# Can access with indexes
+
+print(result[0])
+# Lovelace, Ada
+
+print(result[1])
+# Lovelace
+```
+
+```py
+def rearrange_name(name):
+	result = re.search(r"^(\w*), (\w*)$", name)
+
+	if result is None:
+		return name
+
+	return f"{result[2]} {result[1]}"
+
+rearrange_name("Lovelace, Ada")
+rearrange_name("Ritchie, Dennis")
+rearrange_name("Hopper, Grace M.")
+```
+
+### More on Repetition Qualifiers
+
+`{5}` -> looks for exactly 5 repetition.
+
+`\b` represents word limit -> gives full words.
+
+```py
+# Gets all five letter whole words.
+print(re.findall(r"\b[a-zA-Z]{5}\b", "A scary ghost appeared"))
+```
+
+`{5,10}` -> anywhere from 5 - 10 repetitions.  
+`{5,}`  
+`{,10}`
+
+### Extracting a PID Using Regexes in Python
+
+```py
+import re
+log = "July 31 07:51:48 mycomputer bad_processes[12345]: ERROR Performing package upgrade"
+regex = r"\[(\d+)\]"
+result = re.search(regex, log)
+print(result[1])
+
+result = re.search(regex, "A completely different string that also has numbers [34567]")
+print(result[1])
+```
+
+```py
+def extract_pid(log_line):
+	regex = r"\[(\d+)\]"
+	result = re.search(regex, log_line)
+	if result is None:
+		return ""
+	return result[1]
+
+print(extract_pid("99 elephants in a [cage]"))
+```
+
+### Splitting and Replacing
+
+`split`
+
+Example split a string into sentences:
+
+```py
+re.split(r"[.?!]", "One sentence. Another one? And the last one!")
+
+# To capture the elements using to split the values:
+re.split(r"([.?!])", ...)
+```
+
+`sub`
+
+Substituting all or part of string fro a different string.
+
+Example removing addresses from logs with email addresses of users:
+
+```py
+re.sub(r"[\w.%+-]+@[\w.-]+", "[REDACTED]", "Received an email for go_nuts95@gamil.lcom")
+
+re.sub(r"^([\w .-]*), ([\w .-]*)$", r"\2 \1", "Lovelace, Ada"))
+# Look up back-referencing
+```
+
+Try [Regex Crossword](https://regexcrossword.com/)
