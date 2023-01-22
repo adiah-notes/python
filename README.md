@@ -18,3 +18,4 @@
 - [Introduction](os_interaction/python.md)
 - [Managing Files](os_interaction/files.md)
 - [Regular Expressions](os_interaction/regex.md)
+- [Managing Data and Processes](os_interaction/processes.md)
