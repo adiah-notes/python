@@ -155,8 +155,134 @@ Understand basic assertions:
 
 ## Other Test Concepts
 
+### Black Box vs White Box
+
+White-Box relies on knowledge of the product being tested.
+
+Black-box, the tester doesn't know how the program works. Just knows the inputs and outputs.
+
+### Other Test Types
+
+#### Integration
+
+Integration tests check that interactions between different pieces of code are working correctly.
+
+Might need to use a separate test environment.
+Take a bit more work to set up.
+
+#### Regression test
+
+Part of debugging to verify that an issue or error has been fixed once
+
+#### Smoke Tests
+
+Testing before other tests, basic tests.
+
+#### Load Tests
+
+Test that the program works under heavy load.
+
+### Test-Driven Development
+
+TDD -> creating tests before writing the code. This makes sure you thought about the problem you're trying to solve. Can make you think of the ways your program cann fail.
+
+**Continuous Integration**
+
 ## Errors and Exceptions
 
+### The Try-Except Construct
+
+What if there are multiple things that can cause a function to raise an Error.
+
+The code in the except block only runs if the code in the try block returns an Error of the matching type.
+
+```py
+#!/usr/bin/env python3
+def character_frequency(filename):
+	# First try to open the file
+	try:
+		f = open(filename)
+	except OSError:
+		return None
+
+	# Now Process the file
+	characters = {}
+	for line in f:
+		for char in line:
+			characters[char] = characters.get(char, 0) + 1
+	f.close()
+	return characters
 ```
 
+Need to be aware of the Errors the functions we are calling can raise. Usually part of the documentation.
+
+### Raising Errors
+
+Raising an Error ourselves:
+
+function that verifies that a username is valid:
+
+```py
+def validate_user(username, minlen):
+	if len(username) < minlen:
+		return False
+	if not username.isalnum():
+		return False
+	return True
 ```
+
+What if the minlen is 0 or empty:
+Check that the parameters are sane, and don't return False , since that's misleading.
+
+```py
+def validate_user(username, minlen):
+	if minlen < 1:
+		raise ValueError("minlen must be at least 1")
+	if len(username) < minlen:
+		return False
+	if not username.isalnum():
+		return False
+	return True
+```
+
+Can use prebuilt errors or our own custom.
+
+Check that values are intended, contain the values and types.
+Use raise for situations that are likely to happen, and assert for situations that aren't as likely.
+
+`assert`
+
+```py
+def validate_user(username, minlen):
+	assert type(username) == str, "username must be a string"
+```
+
+### Testing for Expected Errors
+
+`assertRaises` method
+
+```py
+import unittest
+
+from validation import validate_user
+
+class TestValidateUser(unittest.TestCase):
+	...
+
+	def test_invalid_minlen(self)
+	self.assertRaises(ValueError, validate_user, "user", -1)
+```
+
+### Cheat Sheet
+
+- [Raise](https://docs.python.org/3/tutorial/errors.html#raising-exceptions)
+- Asserts:
+
+  - [assert statement](https://docs.python.org/2/reference/simple_stmts.html#the-assert-statement)
+  - [use of assert](https://stackoverflow.com/questions/5142418/what-is-the-use-of-assert-in-python)
+
+- [Try clause](https://docs.python.org/2/tutorial/errors.html#handling-exceptions)
+
+- [Except](https://docs.python.org/3/library/exceptions.html#bltin-exceptions)
+
+- [Exception Handling Techniques](https://doughellmann.com/posts/python-exception-handling-techniques/)
