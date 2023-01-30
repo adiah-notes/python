@@ -118,7 +118,20 @@ This only reverts that commit, leaving the ones in-between intact.
 
 ### What is a branch
 
+At it's most basic a pointer to a particular commit. It represents an independent line of development in a project.
+
+The commit it points to is the latest link in a chain of developing history.
+
+The default branch in now `main`.
+Commonly used to represent the known good state of a project.
+
+To develop a new feature, or try something new, create a separate branch to do your work without worrying about messing up that current state.
+
+You can merge back into the main branch when you've got something you like, or discard changes without negative impact.
+
 ### Creating New Branches
+
+`
 
 ### Merge Conflicts
 
