@@ -58,11 +58,38 @@ Needs to be added and committed.
 
 `-p` - asks on a per-file basis.
 
+Use `git reset` to unstage changes we don't want to commit. `git reset -p` to get git to ask which specific changes to reset.
+
 ### Amending Commits
+
+If you've forgotten to add a file to the same commit change, or you want a more descriptive commit message.
+
+First add the files you may have forgotten.
+
+Use `git commit --amend`, take what's in the current staging area and run `git commit` to overwrite the previous commit.
+
+Git amend is okay for local commits, but don't use it on public commits.
 
 ### Rollbacks
 
+If you've pushed to a repo already and there is an issue you can go back to a previous snapshot.
+
+One way is with `git revert`. This isn't just an undo, it creates a commit with the inverse of the changes made in the bad commit.
+
+This keeps the history consistent.
+
+Can revert the latest commit by using the HEAD alias.
+
+`git revert HEAD`
+
+Usually a good idea to add an explanation of why we're doing the rollback.
+
+`git log -p -2` -> last two commits
+
 ### Identifying a Commit
+
+What if an error is not the latest commit?
+Can target a specific commit by using its commit ID.
 
 ### Git Revert Cheat Sheet
 
