@@ -91,7 +91,28 @@ Usually a good idea to add an explanation of why we're doing the rollback.
 What if an error is not the latest commit?
 Can target a specific commit by using its commit ID.
 
+The commit ID is made from hashing all the information about a commit.
+This helps with data integrity.
+
+Can use `git show <id>` the show a specific commit.
+
+Don't need to copy and paste the whole id. Can just provide the first few characters. Four to eight is usually enough.
+
+Can call the `git revert <id>` with the identifier.
+
+This only reverts that commit, leaving the ones in-between intact.
+
 ### Git Revert Cheat Sheet
+
+[`git checkout`](https://git-scm.com/docs/git-checkout) is effectively used to switch branches.
+
+[`git reset`](https://git-scm.com/docs/git-reset#_examples) resets the repo.
+
+[`git commit --amend`](https://git-scm.com/docs/git-commit#Documentation/git-commit.txt---amend) is used to make changes to commits after-the-fact.
+
+[`git revert`](https://git-scm.com/docs/git-revert) makes a new commit which effectively rolls back a previous commit.
+
+[More ways](https://git-scm.com/book/en/v2/Git-Basics-Undoing-Things) to rollback commits in Git.
 
 ## Branching and Merging
 
