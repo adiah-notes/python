@@ -131,8 +131,72 @@ You can merge back into the main branch when you've got something you like, or d
 
 ### Creating New Branches
 
-`
+`git branch`
+`git branch branch-name`
+
+Switch to a new branch with `git checkout branch_name`
+Use `git checkout` to checkout the latest snapshot for both files and for branches.
+
+Create a new branch and switch to it in one with `git checkout -b new_branch`.
+
+Can create new files and commit to the new branch.
+
+The `git log` will show that HEAD points to new branch.
+
+### Working with Branches
+
+`ls -l`
+
+If you switch back to main, the HEAD will point to the latest commit in that branch.
+Commits ahead of that in other branches won't even show up.
+
+The working directory and commit history reflects the branch.
+
+Delete branches with `git branch -d branch_name`.
+
+If there are changes that haven't been merged to main, then there will be an error.
+
+### Merging
+
+Combing branched data and history together.
+
+`git merge branch_name` from the branch you want to merge into.
+
+There is
+
+- fast-forward: All the commits in the checked out branch are also in the branch that's being merged.
+
+- three-way: When the history of the merging branches has diverged in some way, there isn't a nice linear path to combine via fast-forwarding. Happens when a commit is made on one branch after the point when both branches split.
+
+If the changes were made in different files or in different places in the same file, git combines the changes to get the result. If the changes are made on the same part, there will be a merge conflict.
 
 ### Merge Conflicts
 
+`git merge branch_name`
+
+There will be an error when trying to merge.
+
+Open the files, git shows what needs to be fixed.
+You decide which to keep, or if to change the file completely.
+
+Run `git add` on file to update the status.
+
+Call `git commit`
+
+`git log --graph --oneline`
+
+Can use `git merge --abort` to stop the merge and start over.
+
 ### Git Branches and Merging Cheat Sheet
+
+| **Command**                 | **Explanation & Link**                                                                                                                |
+| --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| `git branch`                | [Used to manage branches](https://git-scm.com/docs/git-branch)                                                                        |
+| `git branch <name>`         | [Creates the branch](https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging)                                        |
+| `git branch -d <name>`      | [Deletes the branch](https://git-scm.com/docs/git-branch#Documentation/git-branch.txt--D)                                             |
+| `git branch -D <name>`      | [Forcibly deletes the branch](https://git-scm.com/docs/git-branch#Documentation/git-branch.txt--D)                                    |
+| `git checkout <branch>`     | [Switches to a branch](https://git-scm.com/docs/git-checkout)                                                                         |
+| `git checkout -b <branch>`  | Creates a new branch and [switches to it](https://git-scm.com/docs/git-checkout#Documentation/git-checkout.txt--bltnewbranchgt)       |
+| `git merges <branch>`       | [Merge joins branches together](https://git-scm.com/docs/git-merge)                                                                   |
+| `git merge --abort`         | If there are merge conflicts (meaning files are incompatible), `--abort` can be used to abort the merge action.                       |
+| `git log --graph --oneline` | [This shows a summarized view of the commit history for a repo](https://git-scm.com/book/en/v2/Git-Basics-Viewing-the-Commit-History) |
