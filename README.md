@@ -27,3 +27,4 @@
 - [Introduction](git/intro.md)
 - [Using Git Locally](git/local.md)
 - [Working with Remotes](git/remote.md)
+- [Collaboration](git/collaboration.md)
