@@ -31,6 +31,21 @@ It's important to document what you do throughout the whole process.
 
 ### Silently Crashing Application
 
+If a program doesn't even run.
+
+`strace` lets us look more deeply at what a program is doing.
+Trace the system calls made by the program and what the result of each of them is.
+
+`strace ./program.py`
+
+Outputs a lot.
+
+System calls are calls that the running program make to the kernel.
+
+`strace -o` store to a file
+
+`strace -o failure.strace ./program.py`
+
 ## Understanding the Problem
 
 ### "It Doesn't Work"
