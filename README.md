@@ -28,3 +28,7 @@
 - [Using Git Locally](git/local.md)
 - [Working with Remotes](git/remote.md)
 - [Collaboration](git/collaboration.md)
+
+### Troubleshooting and Debugging Techniques
+
+- [Introduction](troubleshooting/intro.md)
