@@ -32,3 +32,4 @@
 ### Troubleshooting and Debugging Techniques
 
 - [Introduction](troubleshooting/intro.md)
+- [Slowness](troubleshooting/slowness.md)
