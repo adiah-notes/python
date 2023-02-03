@@ -164,22 +164,123 @@ Super fast for looking up keys
 
 > If you need to access elements by position, or will always iterate through all the elements, use a list to store them.
 
+> If you need to look up the elements using a key, use a dictionary.
+
+Double check if copies are necessary in memory. If the structures are large, it can become expensive.
+
 ### Expensive Loops
+
+If you do an expensive operation inside a loop, you multiply the time it takes to do the expensive operation by the amount of times you repeat the loop.
+
+For instance parsing a file outside of a loop, then store that in a dictionary and then only access the dictionary in the loop.
+
+Make sure the list of elements you're iterating through is only as long as you really need it to be.
+
+Break out of loops as soon as you find what you're looking for.
 
 ### Keeping Local Results
 
+Can avoid accessing the data from a slow source over and over.
+
+If it's stable information, won't get outdated quickly.
+
+Depending on the use, the cache will need to be short-lived.
+
+- How often the data changes
+- How critical it is to have the latest data
+- How frequently the program will be executed
+
+A cache can be as simple as a variable that contains a value instead of calculating it over and over.
+
+Storing intermediate results can be a way to cut down on how much of the expensive operation needs to be done.
+
 ### Slow Script with Expensive Loop
 
+Use `time ./program` -> runs the script and calculates the time.
+
+- Real -> The amount of actual time that it takes took to execute the command. Wall-clock time.
+- User -> Time spent doing operations in the user space
+- Sys -> Time spent doing system-level operations
+
+`pprofile3` to get info on the program.  
+`pprofile3 -f callgrind -o profile.out ./program`
+
+Using the callgrind format?
+
+Open with `kcachegrind` -> gui for callgrind.
+
+`kcachegrind profile.out`
+
 ### More About Improving Our Code
+
+[Profiling](https://en.wikipedia.org/wiki/Profiling_(computer_programming)
 
 ## When Slowness Problems Get Complex
 
 ### Parallelizing Operations
 
+Reading from disk is slow, and the program will not usually be doing anything while that is happening.
+
+Do operations in parallel.
+
+`Concurrency`.
+
+OS handles the processes. Decides which proceses occurs on which core.
+What fraction of cpu time.
+
+Split into different processes and let the os handle the concurrency.
+
+Eg. if script collects stats for a list of computers, instead of the script being called for all the computers and going through one at a time, call the script on a smaller subset of computers and call it many times at once.
+
+Have a good balance of processes that use different resources.
+
+What about shared data?
+**Threads** allow running parallel tasks inside a process.
+
+Not handled by os.
+
+In python -> `threading` or `async io`.
+
+I/O bound may not need multiple processes.
+
 ### Slowly Growing in Complexity
 
 ### Dealing with Complex Slow Systems
 
+Find the bottleneck.
+
+Have a good monitoring system.
+
+Eg having indexes for items queried often.
+
+Modify code to be able to run on a distributed system.
+
+Make sure that you're only doing what you really need to.
+
 ### Using Threads to Make Things Go Faster
 
+import `futures` from `cuncurrent`
+
+Executor -> process in charge of distributing teh work among the different workes.
+
+Futures module -> provides different executors; one for threads and one for processes.
+
+`executor = futures.ThreadPoolExecutor()`
+
+instead of calling function directly, submit a new task to the executor.
+`executor.submit(process_file, root, basename)`
+
+The executor runs the functions in parallel.
+the loop is finished as soon as all are assigned.
+
+`executor.shutdown()`
+
+Can try with `ProcessPoolExecutor()` instead. Makes more use of cpu.
+
+Threads have a lot of safety features in python. May make them wait their turn.
+
 ### More About Complex Slow Systems
+
+- https://realpython.com/python-concurrency/
+
+- https://hackernoon.com/threaded-asynchronous-magic-and-how-to-wield-it-bba9ed602c32
