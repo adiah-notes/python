@@ -33,3 +33,4 @@
 
 - [Introduction](troubleshooting/intro.md)
 - [Slowness](troubleshooting/slowness.md)
+- [Crashing Programs](troubleshooting/crash.md)
