@@ -34,3 +34,8 @@
 - [Introduction](troubleshooting/intro.md)
 - [Slowness](troubleshooting/slowness.md)
 - [Crashing Programs](troubleshooting/crash.md)
+- [Managing Resources](troubleshooting/resources.md)
+
+### Configuration Management and the Cloud
+
+- [Introduction](configuration/intro.md)
