@@ -251,3 +251,55 @@ Just collects the current facts...
 ## Deploying Puppet Locally
 
 ### Applying Rules Locally
+
+### Setting up Puppet Clients and Servers
+
+```
+sudo puppet config --section master set autosign true
+```
+
+- Configures Puppet to automatically sign the certificate requests of added nodes.
+
+```
+ssh webserver
+sudo apt install puppet
+sudo puppet config set server ubuntu.example.com
+```
+
+- `ssh webserver` allows you to ssh into a machine called webserver.
+- `sudo apt install puppet` installs the puppet agent
+  `sudo puppet config set server ubuntu.example.com` configures Puppet to talk to the server on ubuntu.example.com
+
+```
+sudo puppet agent -v --test
+```
+
+Tests the connection between the Puppet agent on the machine and the Puppet master.
+The `-v` command indicates the output should be verbose.
+`--test` indicates it's a test run.
+
+```
+vim /etc/puppet/code/environments/production/manifests/site.pp
+
+node webserver {
+	class { 'apache': }
+}
+
+node default {}
+```
+
+- View and create the `site.pp` manifest file. Install Apache on the webserver nodes, define the node with the `node webserver` command, and then include the Apache class without any parameters.
+  Then define the default node definition with code `node default{}` - No classes yet
+
+```
+sudo systemctl enable puppet
+```
+
+- Use the `systemctl` command to enable the puppet service so that Puppet agent is started whenever the machine reboots.
+
+```
+sudo systemctl start puppet
+sudo systemctl status puppet
+```
+
+- starts the puppet service and checks its status.
