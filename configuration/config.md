@@ -252,6 +252,105 @@ Just collects the current facts...
 
 ### Applying Rules Locally
 
+Can be also used as a standalone system. Useful for testing.
+
+Create a Manifest - file where all the rules to be applied are stored. They end with a `.pp` extension.
+
+tools.pp
+
+```pp
+package { 'htop':
+	ensure => present,
+
+}
+```
+
+```bash
+sudo apt install puppet-master
+#(...)
+#Processing triggers for systemd
+
+
+vim tools.pp
+htop
+#-bash: /usr/bin/htop: No such file or directory
+```
+
+```bash
+sudo puppet apply -v tools.pp
+```
+
+Catalog - the list of rules that are generated for one specific computer once the server has evaluated all variables, conditionals, and functions.
+
+In this case, the catalog will be the same as the code because there are no conditionals, variables, and functions.
+
+### Managing Resource Relationships
+
+```bash
+vim ntp.pp
+class ntp {
+	package { 'ntp':
+	  ensure => latest,
+	}
+	file { '/etc/ntp.conf':
+	  source => '/home/user/ntp.conf',
+	  replace => true,
+	  require => Package['ntp'],
+	  notify => Service['ntp'],
+	}
+	service {'ntp':
+	  enable => true,
+	  ensure => running,
+	  require => File['/etc/ntp.conf'],
+	}
+}
+include ntp
+```
+
+The configuration file requires the `ntp` package and the `ntp` service requires the configuration file.
+
+So Puppet knows before starting the service, the configuration file needs to be correctly set.
+
+`require => Package['ntp']`
+
+And before setting the configuration file, the package needs to be installed.
+
+Also specified that the `ntp` service should be notified if the configuration file changes. - `notify => Service['ntp']`
+
+This means that the service will get restarted if the configuration settings are changed.
+
+The puppet manifests usually use different resources that are related to each other.
+
+> Write resource types in lowercase when declaring them, but capitalize them when referring to them from another resource's attribute.
+
+At the end, we include ntp...
+
+Typically, the class is defined in one file and included in another.
+
+```bash
+sudo puppet apply -v ntp.pp
+```
+
+### Organizing Puppet Modules
+
+A collection of manifests and related data.
+
+Group things under a sensible topic.
+
+Stored in a directory called manifests, then different stuff goes in different folders.
+
+- Files
+  - files that are copied into the client machines without any changes
+- Templates
+  - files that are preprocessed before they'be been copied into the client machines.
+  - can include values that get replaced after calculating the manifests, or sections that are only present if certain conditions are valid.
+
+Start with a simple module - just one manifest in the Manifest directory.
+
+- `init.pp` define a class with the same name as the module that you're creating.
+
+## Deploying Puppet to Clients
+
 ### Setting up Puppet Clients and Servers
 
 ```
