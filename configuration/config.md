@@ -402,3 +402,162 @@ sudo systemctl status puppet
 ```
 
 - starts the puppet service and checks its status.
+
+### More Information about Deploying Puppet to Clients
+
+[https://www.masterzen.fr/2010/11/14/puppet-ssl-explained/](https://www.masterzen.fr/2010/11/14/puppet-ssl-explained/)
+
+## Updating Deployments
+
+### Modifying and Testing Manifests
+
+Instead of trying out new manifests locally on the fly, use
+
+- `puppet parser validate` - checks syntax of manifest
+- `--noop` parameter - simulates what would happen
+- having test machines dedicated for testing rules. - manual process
+- `rspec` tests - set facts to different values and checking that it runs what it should.
+  - can run tests whenever changes are made.
+
+use a set of test machines - to apply the catalog and test that scripts have the correct result.
+
+```
+describe 'gksu', :type => :class do
+	let (:facts) { { 'is_virtual' => 'false' } }
+	it { should contain_package('gksu').with_ensure('latest')}
+end
+```
+
+The code runs an rspec test to determine whether the `gksu` package has the intended behavior when the fact `is_virtual` is set to `false`.
+
+### Safely Rolling out Changes and Validating Them
+
+Working correctly on our computer doesn't mean it works correctly in production.
+
+Always run changes through a test environment first. Should have one or more machines running the exact same config as production environment. But not serving any users.
+
+Puppet environments allow full isolation depending on nodes/manifests.
+
+- Dev environment
+- Feature environment
+
+Push to machines in test environment first.
+
+Pushing changes to all machines at the same time is not a good idea.
+
+- Do it in batches.
+  - Canaries or early adopters - could push to nodes with this fact on one day and then push to the rest.
+
+Good idea for changes to be small and self-contained.
+So it's easier to figure out where a problem occurred.
+
+### Updating Deployments
+
+#### [https://rspec-puppet.com/tutorial/](https://rspec-puppet.com/tutorial/)
+
+**What to test?**
+
+Rspec-puppet tests test the behaviour of Puppet when it compiles your manifests into a catalogue of Puppet resources.
+
+Should only test the first level of resources in your manifest.
+
+#### [http://puppet-lint.com/](http://puppet-lint.com/)
+
+## Monitoring and Alerting
+
+### Getting Started with Monitoring
+
+We want to make sure our service keeps running and behaving correctly.
+
+Monitoring lets us look into the history and current status of a system.
+
+Metrics tell us if the service is behaving as expected. Can be generic or specific.
+
+Example a response code from a webserver. You'd check both the amount and types of codes.
+For an e-commerce site, you'd care about how many purchases were made successfully and how many failed to complete.
+
+Think about the service to figure out what metrics we need.
+
+Get metrics into a monitoring system. Create dashboards based on the collected data. Compare data to see how metrics change over time, or look how two metric types relate to each other.
+
+Only store the metrics that you care about.
+
+Whitebox - checks the behaviour of the system from the inside. - Actively checking memory etc.
+
+Blackbox - check the behaviour from the outside. - Making a request and seeing the response matches the expected.
+
+### Getting Alerts when things go wrong
+
+Services need to be up 24/7. System administrators can't be in front the screens all the time.
+
+Automating alerts will notify you about problems before the users even notice the problem.
+
+Basic - do periodic checks and send an email if it isn't healthy.
+
+`cron` on linux - tool to schedule periodic jobs.
+
+Can configure teh system to periodically check metrics and raise an alert if something is out of the ordinary.
+
+Raising an alert signals that something is broken and a human needs to respond.
+
+Not alerts are equally alert - immediate attention, and important that can be dealt with later.
+
+Pages - alerts that need immediate attention.
+
+Bugs and tickets - for less critical alerts.
+
+All alerts should be actionable, there should be something that you can respond to.
+
+### Service-Level Objectives
+
+Pre-established performance goals for a specific service.
+
+Need to be measurable.
+
+### Basic Monitoring in GCP
+
+Stackdriver..
+
+### More info on Monitoring and Alerting
+
+- [https://www.datadoghq.com/blog/monitoring-101-collecting-data/](https://www.datadoghq.com/blog/monitoring-101-collecting-data/)
+- [https://www.digitalocean.com/community/tutorials/an-introduction-to-metrics-monitoring-and-alerting](https://www.digitalocean.com/community/tutorials/an-introduction-to-metrics-monitoring-and-alerting)
+- [https://en.wikipedia.org/wiki/High_availability](https://en.wikipedia.org/wiki/High_availability)
+- [https://landing.google.com/sre/books/](https://landing.google.com/sre/books/)
+
+## Troubleshooting and Debugging
+
+### What to Do When You Can't be Physically There
+
+### Identify where the failure is coming from
+
+Check if it's the provider or you - check a different region or use a different system
+
+Rollback recent changes...
+
+Containerized applications - deploy somewhere else and see if it works the same
+
+Number of small containers to solve different aspects - need to get logs from each container.
+
+### Recovering from Failure
+
+Good backups and well-documented recovery.
+
+Backups of data and systems.
+
+If you operate a service that stores any kind of data, it's critical that you implement automatic backups, and that you periodically check that those backups are working correctly by performing restores.
+
+If you store infrastructure as code, you already have a backup. But having secondary services up and running so that there will be less downtime.
+
+- Have enough servers so that if some go down, the rest can still handle the load
+- Have systems in data centers around the world.
+- For on-premise systems, have more than one connection to the internet to be independent of ISP going down.
+
+Have a documented procedure for all the steps neededto restore system from scratch using data backups.
+Keep them updated, once in a while pretend that you need to set up from scratch and see what needs to be done.
+
+### Debugging Problems on the Cloud
+
+- [https://cloud.google.com/compute/docs/troubleshooting/troubleshooting-instances](https://cloud.google.com/compute/docs/troubleshooting/troubleshooting-instances)
+- [https://docs.microsoft.com/en-us/azure/virtual-machines/troubleshooting/](https://docs.microsoft.com/en-us/azure/virtual-machines/troubleshooting)
+- [https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-troubleshoot.html](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-troubleshoot.html)
